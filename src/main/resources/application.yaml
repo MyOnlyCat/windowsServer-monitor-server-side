@@ -1,0 +1,10 @@
+server:
+  port: 9090
+
+# feign
+feign:
+  httpclient:
+    enabled: false
+    connection-timeout: 3000
+  okhttp:
+    enabled: true

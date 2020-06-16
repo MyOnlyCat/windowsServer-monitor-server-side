@@ -24,11 +24,10 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * 服务器相关信�?
- * 
- * @author ruoyi
+ * 服务器相关
+ *
+ * @author 11609
  */
-@Data
 public class Server
 {
 
