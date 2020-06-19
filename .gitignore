@@ -1,6 +1,15 @@
 # Compiled class file
 *.class
 
+# target file
+target/*
+
+# idea file
+*.idea
+
+# iml file
+server-side.iml
+
 # Log file
 *.log
 
