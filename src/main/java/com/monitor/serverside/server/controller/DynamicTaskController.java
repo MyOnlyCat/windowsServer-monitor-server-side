@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.ScheduledFuture;
 
 /**
  * @author 七渣渣
+ * 此类用于被客户端的Feign调用,用于控制定时任务
  */
 @RestController
 @RequestMapping(value = "/api/task")
@@ -44,7 +46,7 @@ public class DynamicTaskController {
     /**
      * 启动任务
      **/
-    @RequestMapping("/startTask")
+    @GetMapping(value = "/startTask")
     public String startCron() {
         future = threadPoolTaskScheduler.schedule(new ServerReportRunnable(), new CronTrigger("0/5 * * * * *"));
         log.info("DynamicTaskController.startCron()");
@@ -54,7 +56,7 @@ public class DynamicTaskController {
     /**
      * 停止启此任务
      **/
-    @RequestMapping("/stopTask")
+    @GetMapping(value = "/stopTask")
     public String stopCron() {
         if (future != null) {
             future.cancel(true);
@@ -66,7 +68,7 @@ public class DynamicTaskController {
     /**
      * 变更任务间隔，再次启动
      **/
-    @RequestMapping("/changeCron")
+    @GetMapping(value = "/changeCron")
     public String changeCron() {
         stopCron();// 先停止，在开启.
         future = threadPoolTaskScheduler.schedule(new ServerReportRunnable(), new CronTrigger("*/10 * * * * *"));

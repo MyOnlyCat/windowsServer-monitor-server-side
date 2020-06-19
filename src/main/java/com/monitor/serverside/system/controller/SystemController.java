@@ -22,13 +22,10 @@ public class SystemController {
      * @return Server
      */
     @GetMapping(value = "/operationRatio")
-    public Result<?> getOperationRatio() {
+    public Result<Object> getOperationRatio() {
         Server server = new Server();
         server.copyTo();
         System.out.println(server.getCpu().getTotal());
         return Result.ok(server);
     }
-
-
-
 }

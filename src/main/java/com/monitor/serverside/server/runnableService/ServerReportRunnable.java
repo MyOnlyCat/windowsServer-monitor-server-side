@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 七渣渣
+ * 定时任务类
  */
 @Slf4j
 public class ServerReportRunnable implements Runnable{
