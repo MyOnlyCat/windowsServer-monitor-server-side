@@ -1,4 +1,4 @@
-package com.monitor.serverside.system.sysInfo;
+package com.monitor.serverside.system.sysInfoModel;
 
 /**
  * 系统相关信息

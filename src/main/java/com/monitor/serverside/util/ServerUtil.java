@@ -44,9 +44,4 @@ public class ServerUtil {
         }
         return "未知";
     }
-
-    public static String getOsName() {
-        Properties props = System.getProperties();
-        return props.getProperty("os.name");
-    }
 }

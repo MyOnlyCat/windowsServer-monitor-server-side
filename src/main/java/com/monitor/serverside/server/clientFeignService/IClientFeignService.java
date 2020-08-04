@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 /**
  * @author 11609
  */
-@FeignClient(name = "client-about-server", url = "http://192.168.0.134:7070/")
+@FeignClient(name = "client-about-server", url = "${master.url}")
 public interface IClientFeignService {
 
     /**

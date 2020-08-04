@@ -1,7 +1,7 @@
 package com.monitor.serverside.system.controller;
 
 import com.monitor.serverside.api.vo.Result;
-import com.monitor.serverside.system.sysInfo.Server;
+import com.monitor.serverside.system.sysInfoModel.Server;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

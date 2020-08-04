@@ -8,3 +8,6 @@ feign:
     connection-timeout: 3000
   okhttp:
     enabled: true
+
+master:
+  url: http://192.168.0.134:7070/

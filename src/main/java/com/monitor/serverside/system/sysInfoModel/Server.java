@@ -1,7 +1,6 @@
-package com.monitor.serverside.system.sysInfo;
+package com.monitor.serverside.system.sysInfoModel;
 
 import com.monitor.serverside.util.ServerUtil;
-import lombok.Data;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.CentralProcessor.TickType;
@@ -11,14 +10,9 @@ import oshi.software.os.FileSystem;
 import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
 import oshi.util.Util;
+import sun.rmi.runtime.Log;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -127,23 +121,39 @@ public class Server
     private void setCpuInfo(CentralProcessor processor) {
         // CPU信息
         long[] prevTicks = processor.getSystemCpuLoadTicks();
-        Util.sleep(OSHI_WAIT_SECOND);
+        long[][] prevProcTicks = processor.getProcessorCpuLoadTicks();
+//        oshi.add("CPU, IOWait, and IRQ ticks @ 0 sec:" + Arrays.toString(prevTicks));
+        // Wait a second...
+        Util.sleep(1000);
         long[] ticks = processor.getSystemCpuLoadTicks();
+//        oshi.add("CPU, IOWait, and IRQ ticks @ 1 sec:" + Arrays.toString(ticks));
+        long user = ticks[TickType.USER.getIndex()] - prevTicks[TickType.USER.getIndex()];
         long nice = ticks[TickType.NICE.getIndex()] - prevTicks[TickType.NICE.getIndex()];
+        long sys = ticks[TickType.SYSTEM.getIndex()] - prevTicks[TickType.SYSTEM.getIndex()];
+        long idle = ticks[TickType.IDLE.getIndex()] - prevTicks[TickType.IDLE.getIndex()];
+        long iowait = ticks[TickType.IOWAIT.getIndex()] - prevTicks[TickType.IOWAIT.getIndex()];
         long irq = ticks[TickType.IRQ.getIndex()] - prevTicks[TickType.IRQ.getIndex()];
         long softirq = ticks[TickType.SOFTIRQ.getIndex()] - prevTicks[TickType.SOFTIRQ.getIndex()];
         long steal = ticks[TickType.STEAL.getIndex()] - prevTicks[TickType.STEAL.getIndex()];
-        long cSys = ticks[TickType.SYSTEM.getIndex()] - prevTicks[TickType.SYSTEM.getIndex()];
-        long user = ticks[TickType.USER.getIndex()] - prevTicks[TickType.USER.getIndex()];
-        long iowait = ticks[TickType.IOWAIT.getIndex()] - prevTicks[TickType.IOWAIT.getIndex()];
-        long idle = ticks[TickType.IDLE.getIndex()] - prevTicks[TickType.IDLE.getIndex()];
-        long totalCpu = user + nice + cSys + idle + iowait + irq + softirq + steal;
+        long totalCpu = user + nice + sys + idle + iowait + irq + softirq + steal;
+        // 核心数量
         cpu.setCpuNum(processor.getLogicalProcessorCount());
-        cpu.setTotal(totalCpu);
-        cpu.setSys(cSys);
-        cpu.setUsed(user);
-        cpu.setWait(iowait);
-        cpu.setFree(idle);
+        // cpu负载
+        cpu.setTotal(Double.parseDouble(String.format("%.1f", processor.getSystemCpuLoadBetweenTicks(prevTicks) * 100)));
+        // Cpu系统使用率
+        cpu.setSys(Double.parseDouble(String.format("%.1f", 100d * sys / totalCpu)));
+        // Cpu用户使用率
+        cpu.setUsed(Double.parseDouble(String.format("%.1f", 100d * user / totalCpu)));
+        // Cpu当前等待
+        cpu.setWait(Double.parseDouble(String.format("%.1f", 100d * iowait / totalCpu)));
+        // Cpu当前空闲
+        cpu.setFree(Double.parseDouble(String.format("%.1f", 100d * idle / totalCpu)));
+    }
+
+    private static float[] floatArrayPercent(double d) {
+        float[] f = new float[1];
+        f[0] = (float) (100d * d);
+        return f;
     }
 
     /**

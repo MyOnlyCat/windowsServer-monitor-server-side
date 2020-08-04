@@ -18,6 +18,7 @@ public class ServerReportRunnable implements Runnable{
     @Override
     public void run() {
         ServerReportVo serverReportVo = new ServerReportVo();
+        serverReportVo.setInfo();
         this.clientFeignService = BeanContext.getApplicationContext().getBean(IClientFeignService.class);
         clientFeignService.saveThisServerAndStopTask(serverReportVo);
         log.info("服务上报, {}", serverReportVo.toString());

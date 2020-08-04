@@ -1,4 +1,4 @@
-package com.monitor.serverside.system.sysInfo;
+package com.monitor.serverside.system.sysInfoModel;
 
 import java.lang.management.ManagementFactory;
 
@@ -10,12 +10,12 @@ import java.lang.management.ManagementFactory;
 public class Jvm
 {
     /**
-     * 当前JVM占用的内存�?�数(M)
+     * 当前JVM占用的内存数(M)
      */
     private double total;
 
     /**
-     * JVM�?大可用内存�?�数(M)
+     * JVM最大可用内存数(M)
      */
     private double max;
 
