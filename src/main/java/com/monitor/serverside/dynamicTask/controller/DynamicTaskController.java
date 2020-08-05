@@ -1,10 +1,8 @@
-package com.monitor.serverside.server.controller;
+package com.monitor.serverside.dynamicTask.controller;
 
-import com.monitor.serverside.server.clientFeignService.IClientFeignService;
-import com.monitor.serverside.server.runnableService.ServerReportRunnable;
+import com.monitor.serverside.dynamicTask.service.ServerReportRunnable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
